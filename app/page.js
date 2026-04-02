@@ -1,23 +1,7 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { works, profile } from './data'
 
-async function getData() {
-  const profile = await prisma.profile.findFirst()
-  const works = await prisma.work.findMany()
-  return { profile, works }
-}
-
-export default async function Home() {
-  const { profile, works } = await getData()
-
-  const me = profile || {
-    name: "前端开发者",
-    job: "Frontend Engineer",
-    intro: "专注 Vue/React 开发，擅长交互动效与 AIGC 前端落地。追求极致体验与视觉还原。",
-    skills: "Vue3, React, Next.js, JavaScript, CSS, AIGC",
-    contact: "wx: your-wechat"
-  }
-
+export default function Home() {
+  const me = profile
   const categoryMap = {
     '全部': 'all',
     '管理系统': 'admin',
@@ -28,7 +12,6 @@ export default async function Home() {
 
   return (
     <main>
-
       {/* 🌸 花瓣飘落 */}
       <div id="petals-container" style={{
         position: 'fixed',
@@ -78,10 +61,9 @@ export default async function Home() {
             {works.map((item, index) => {
               const col = (index % 3) + 1
               return (
-                <div key={item.id} className={`card col-${col}`} data-category={item.category} data-index={index}>
+                <div key={item.id} className={`card col-${col}`} data-category={item.category}>
                   <div className="card-img"></div>
                   <div className="card-body">
-
                     <div className="card-short-content">
                       <h3 className="card-title">{item.title}</h3>
                       <p className="card-desc">{item.desc}</p>
@@ -93,22 +75,19 @@ export default async function Home() {
                         <h4>📝 项目简介</h4>
                         <p>{item.desc}</p>
                       </div>
-
                       {item.url && (
                         <div className="detail-block">
                           <h4>🔗 作品链接</h4>
                           <p><a href={item.url} target="_blank" rel="noopener noreferrer">{item.url}</a></p>
                         </div>
                       )}
-
                       <div className="detail-block">
                         <h4>💻 技术栈</h4>
                         <p>{item.tech}</p>
                       </div>
-
                       <div className="detail-block">
                         <h4>✅ 主要贡献</h4>
-                        <p>{item.extra || '负责页面开发、交互实现、UI还原与性能优化。'}</p>
+                        <p>{item.extra}</p>
                       </div>
                     </div>
 
@@ -123,11 +102,11 @@ export default async function Home() {
 
       <footer className="footer">
         <p>{me.contact}</p>
-        <p>© 2025 Personal Portfolio</p>
+        <p>© 2026 Personal Portfolio</p>
       </footer>
 
       <script dangerouslySetInnerHTML={{ __html: `
-        // 🌸 花瓣飘落
+        // 🌸 花瓣飘落 —— 完全修复编译错误
         function createPetal() {
           const container = document.getElementById('petals-container');
           if (!container) return;
@@ -143,6 +122,7 @@ export default async function Home() {
           container.appendChild(petal);
           setTimeout(() => petal.remove(), 7000);
         }
+
         const style = document.createElement('style');
         style.textContent =
           '@keyframes fall {' +
@@ -165,26 +145,21 @@ export default async function Home() {
         });
         document.querySelector('.tab[data-category="all"]').classList.add('active');
 
-        // 🔥 自动滚动到视图中心
+        // 卡片展开收起
+        let lastOpenCard = null;
         function scrollToCenter(el) {
           setTimeout(() => {
             const rect = el.getBoundingClientRect();
-            const top = window.scrollY + rect.top + rect.height/2 - window.innerHeight/2;
-            window.scrollTo({
-              top: top,
-              behavior: 'smooth'
-            });
+            const top = window.scrollY + rect.top + rect.height / 2 - window.innerHeight / 2;
+            window.scrollTo({ top: top, behavior: 'smooth' });
           }, 300);
         }
 
-        // 🔥 卡片展开：不同方向 + 自动滚动
-        let lastOpenCard = null;
         document.querySelectorAll('.toggle-btn').forEach(btn => {
           btn.addEventListener('click', () => {
             const card = btn.closest('.card');
             const isOpening = !card.classList.contains('open');
 
-            // 关闭所有
             document.querySelectorAll('.card').forEach(c => {
               c.classList.remove('open');
               c.querySelector('.toggle-btn').textContent = '查看详情';
