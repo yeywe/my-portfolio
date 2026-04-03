@@ -1,6 +1,6 @@
 'use client';
 
-import { works, profile } from './data';
+import { works, profile, experiences, skills } from './data';
 import { useEffect } from 'react';
 
 export default function Home() {
@@ -120,11 +120,28 @@ export default function Home() {
       {/* 头部 */}
       <section className="hero parallax-section">
         <div className="parallax-bg" />
-        <div className="container hero-content">
-          <h1>Hi, 我是<br />{me.name}</h1>
-          <p>{me.job}</p>
-          <p style={{ maxWidth: 500, lineHeight: 1.6 }}>{me.intro}</p>
-          <a href="#works" className="btn">查看作品集</a>
+        <div className="container">
+          <div className="hero-content">
+    <div className="hero-intro">
+      {/* 标题组：Hi,我是 + 前端开发者 两行 */}
+      <div className="hero-title-group">
+        <span className="hero-greeting">Hi,我是</span>
+        <h1 className="hero-title">{me.name}</h1>
+      </div>
+      <p className="hero-role">{me.job}</p>
+       {profile.intro.map((item, i) => (
+          <p key={i} className="hero-skills">{item}</p>
+        ))}
+      {/* <p className="hero-skills">{me.skills}</p> */}
+
+      <button onClick={() => {
+    const target = document.getElementById('works');
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  }} className="hero-btn">查看作品集</button>
+    </div>
+  </div>
         </div>
       </section>
 
@@ -133,14 +150,92 @@ export default function Home() {
         <h2 className="section-title">About Me</h2>
         <div className="container about-box">
           <div className="avatar" />
-          <div>
+          <div className="about-info">
             <h3>{me.name}</h3>
-            <p className="job">{me.job}</p>
-            <p className="intro">{me.intro}</p>
-            <p className="skills">{me.skills}</p>
+            <div style={{ marginTop: '14px', lineHeight: '1.8' }}>
+            <p><strong>年龄：</strong>{me.age}</p>
+            <p><strong>微信：</strong>{me.contact.wechat}</p>
+            <p><strong>手机：</strong>{me.contact.phone}</p>
+            <p><strong>邮箱：</strong>{me.contact.email}</p>
+
+        {/* 微信二维码 */}
+      </div>
           </div>
+            <img
+              src={me.contact.qrcode}
+              alt="微信二维码"
+              className='wechat-img'
+             
+            />
         </div>
       </section>
+
+      {/* 技术技能栈 */}
+<section className="skill-section">
+  <h2 className="skill-title">技术技能栈</h2>
+  <p className="skill-subtitle">4 年前端开发经验 | 专注管理系统与小程序</p>
+
+  <div className="skill-grid">
+    <div className="skill-card">
+      <h3>前端基础</h3>
+      <div className="skill-tags">
+        {skills.frontend.map((item, i) => (
+          <span key={i} className="skill-tag">{item}</span>
+        ))}
+      </div>
+    </div>
+
+    <div className="skill-card">
+      <h3>框架 / 库</h3>
+      <div className="skill-tags">
+        {skills.framework.map((item, i) => (
+          <span key={i} className="skill-tag">{item}</span>
+        ))}
+      </div>
+    </div>
+
+    <div className="skill-card">
+      <h3>工具 / 工程化</h3>
+      <div className="skill-tags">
+        {skills.tools.map((item, i) => (
+          <span key={i} className="skill-tag">{item}</span>
+        ))}
+      </div>
+    </div>
+
+    <div className="skill-card">
+      <h3>业务方向</h3>
+      <div className="skill-tags">
+        {skills.business.map((item, i) => (
+          <span key={i} className="skill-tag">{item}</span>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+      {/* 工作经历 */}
+<section id="experience" className="exp-section">
+  <h2 className="exp-title">工作经历</h2>
+  <p className="exp-subtitle">我的职业成长历程</p>
+
+  <div>
+    {(experiences || []).map((exp, idx) => (
+      <div key={idx} className="exp-item">
+        <div className="exp-header">
+          <h3 className="exp-position">{exp.position}</h3>
+          <span className="exp-duration">{exp.duration}</span>
+        </div>
+        <div className="exp-company">{exp.company}</div>
+        <ul className="exp-desc">
+          {(exp.desc || []).map((item, i) => (
+            <li key={i}>{item}</li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+</section>
 
       {/* 作品 */}
       <section id="works">
@@ -205,7 +300,7 @@ export default function Home() {
       </section>
 
       <footer className="footer">
-        <p>{me.contact}</p>
+        <p>{me.contact.email}</p>
         <p>© 2026 Personal Portfolio</p>
       </footer>
     </main>

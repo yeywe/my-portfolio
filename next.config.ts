@@ -5,7 +5,10 @@ const nextConfig: NextConfig = {
   output: "export", // 开启静态导出，生成纯HTML/CSS/JS，适配GitHub Pages等静态托管平台
   trailingSlash: true, // 生成的URL末尾添加斜杠
   distDir: "out", // 输出目录，默认为.next
-  basePath: '/my-portfolio',
+  basePath: '/my-portfolio', // 部署才打开
+  turbopack: {
+    root: __dirname
+  }
 
 };
 

@@ -7,7 +7,8 @@ html {
   scroll-behavior: smooth;
 }
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: #fff;
   color: #111;
   overflow-x: hidden;
@@ -36,42 +37,195 @@ section {
   left: 0;
   width: 100%;
   height: 140%;
-  background: radial-gradient(circle at top right, #e6f7ff, #fff 70%);
+  /* 核心渐变：仅加一点点淡紫，和原蓝色融合，自然不突兀 */
+  background: radial-gradient(
+    circle at 80% 20%,
+    rgba(180, 160, 255, 0.15) 0%,
+    rgba(140, 190, 255, 0.12) 30%,
+    rgba(255, 255, 255, 0) 70%
+  ),
+  radial-gradient(
+    circle at 20% 80%,
+    rgba(160, 180, 255, 0.12) 0%,
+    rgba(120, 200, 255, 0.1) 30%,
+    rgba(255, 255, 255, 0) 70%
+  );
   z-index: -1;
 }
+
 .hero-content {
   position: relative;
   z-index: 1;
 }
-.hero h1 {
+/* -------- 外层容器，保证居中 -------- */
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* -------- 整体 intro 容器，控制整体间距 -------- */
+.hero-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 24px; /* 统一元素间距，不松散 */
+  align-items: flex-start;
+}
+
+/* -------- 标题组：Hi,我是 + 前端开发者 两行 -------- */
+.hero-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0; /* 两行紧凑，无多余间距 */
+}
+
+.hero-greeting {
   font-size: 56px;
   line-height: 1.1;
-  margin-bottom: 20px;
+  font-weight: 700;
+  color: #111;
+  opacity: 0;
+  animation: fadeIn 1s ease forwards;
 }
-.hero p {
-  font-size: 20px;
+
+.hero-title {
+  font-size: 56px;
+  line-height: 1.1;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+  opacity: 0;
+  animation: fadeIn 1s ease forwards 0.1s;
+}
+
+/* -------- 副标题：Frontend Engineer -------- */
+.hero-role {
+  font-size: 16px;
   color: #555;
-  margin-bottom: 30px;
   line-height: 1.6;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: slideUpFade 0.8s ease forwards 0.2s;
 }
-.btn {
-  padding: 14px 28px;
-  background: #0071e3;
+
+/* -------- 描述文本 -------- */
+.hero-desc {
+  font-size: 16px;
+  color: #333;
+  line-height: 1.6;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: slideUpFade 0.8s ease forwards 0.3s;
+}
+
+/* -------- 技能行 -------- */
+.hero-skills {
+  font-size: 16px;
+  color: #333;
+  line-height: 1.6;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: slideUpFade 0.8s ease forwards 0.4s;
+}
+
+/* -------- 按钮：居中 + 加宽 + Vite光效 -------- */
+.hero-btn {
+  /* 保留你原来的样式 */
+  padding: 16px 48px; /* 👈 加宽加大！ */
+  background: linear-gradient(90deg, #0071e3, #5856d6);
   color: #fff;
-  border-radius: 20px;
+  border-radius: 30px; /* 👈 圆角更柔和 */
   text-decoration: none;
   font-weight: 500;
   transition: all 0.3s;
   display: inline-block;
+  cursor: pointer;
+  border: none;
+
+  /* 让按钮居中 */
+  align-self: center; /* 👈 关键！居中 */
+  min-width: 220px; /* 👈 保证宽度够宽 */
+  text-align: center;
+
+  /* Vite 光效 */
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
 }
-.btn:hover {
-  background: #0077ed;
-  transform: scale(1.03);
+
+.hero-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.hero-btn:hover::before {
+  left: 100%;
+}
+
+.hero-btn:hover {
+  background: linear-gradient(90deg, #0071e3, #5856d6);
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 113, 227, 0.4);
+}
+
+/* -------- 动画关键帧 -------- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* 关于 */
 .about {
-  background: #fafafa;
+  max-width: 1200px;
+  margin: 80px auto;
+  padding: 30px 20px;
+  /* 毛玻璃核心 */
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  /* 渐变背景叠加（渐变+毛玻璃融合） */
+  background: linear-gradient(
+    135deg,
+    rgba(230, 247, 255, 0.6) 0%,
+    rgba(255, 255, 255, 0.6) 100%
+  ), rgba(255, 255, 255, 0.4);
+  border-radius: 20px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+  /* 可选：加一层浅边框增强质感 */
+  border: 1px solid rgba(255, 255, 255, 0.7);
 }
 .section-title {
   font-size: 32px;
@@ -80,7 +234,7 @@ section {
 }
 .about-box {
   display: flex;
-  gap: 40px;
+  gap: 70px;
   align-items: center;
 }
 .avatar {
@@ -94,19 +248,142 @@ section {
   font-size: 24px;
   margin-bottom: 8px;
 }
-.about-box .job {
-  color: #0071e3;
-  margin-bottom: 12px;
-  font-weight: 500;
-}
-.about-box .intro {
-  line-height: 1.7;
-  color: #444;
+.about-box .about-info {
+  width: 34%;
+  color: #333;
   margin-bottom: 16px;
 }
-.about-box .skills {
-  color: #555;
+.about-info p {
+  font-size: 16px;
+  color: #333;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.about-content strong {
+  color: #2d6fd3;
+}
+.about-box .wechat-img {
+  min-width: 20%;
+  max-width: 30%;
+  border-radius: "8px";
+  border: "1px solid #eee";
+  align-self: "center";
+  box-shadow: "0 0 10px rgba(0,0,0,0.1)";
+}
+
+/* 技能栈样式 */
+.skill-section {
+  max-width: 1200px;
+  margin: 80px auto;
+  padding: 0 20px;
+}
+
+.skill-title {
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.skill-subtitle {
+  text-align: center;
+  color: #666;
+  margin-bottom: 40px;
+}
+
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+}
+
+.skill-card {
+  background: #fafcff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.skill-card h3 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #2d6fd3;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill-tag {
+  padding: 6px 12px;
+  background: #e6f0ff;
+  color: #2d6fd3;
+  border-radius: 6px;
   font-size: 14px;
+}
+
+/* 工作经历样式 */
+.exp-section {
+  max-width: 1200px;
+  margin: 80px auto;
+  padding: 0 20px;
+}
+
+.exp-title {
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.exp-subtitle {
+  text-align: center;
+  color: #666;
+  margin-bottom: 40px;
+}
+
+.exp-item {
+  margin-bottom: 36px;
+  padding-left: 20px;
+  border-left: 3px solid #add8ff;
+}
+
+.exp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.exp-position {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.exp-duration {
+  color: #666;
+}
+
+.exp-company {
+  font-size: 16px;
+  color: #4299e1;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.exp-desc {
+  padding-left: 20px;
+  color: #444;
+}
+
+.exp-desc li {
+  margin-bottom: 6px;
 }
 
 /* 分类 */
@@ -145,7 +422,7 @@ section {
 .card {
   border-radius: 20px;
   background: #fff;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
   overflow: hidden;
   position: relative;
   transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -153,7 +430,7 @@ section {
 }
 .card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 16px 40px rgba(0,0,0,0.08);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
 }
 
 /* ✅ 你要的核心效果：展开独占整行，同行其他卡片隐藏 */
@@ -257,7 +534,7 @@ section {
   color: #666;
 }
 
-@media (max-width:768px) {
+@media (max-width: 768px) {
   .grid {
     grid-template-columns: 1fr;
   }
